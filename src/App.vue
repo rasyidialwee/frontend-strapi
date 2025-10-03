@@ -103,11 +103,11 @@
             <!-- Left side - Text content -->
             <div class="space-y-8">
               <h1 class="text-5xl lg:text-6xl font-bold text-primary-600 leading-tight">
-            {{ pageData.content[0].Title ?? 'This should be a title' }}
+            {{ pageData.content[0]?.Title ?? 'This should be a title' }}
               </h1>
               
               <p class="text-xl text-gray-600 leading-relaxed max-w-lg">
-                {{ pageData?.content[0].Description ?? "I'm a Freelance UI/UX Designer and Developer based in London, England. I strives to build immersive and beautiful web applications through carefully crafted code and user-centric design." }}
+                {{ pageData?.content[0]?.Description ?? "I'm a Freelance UI/UX Designer and Developer based in London, England. I strives to build immersive and beautiful web applications through carefully crafted code and user-centric design." }}
               </p>
               
               <button 
@@ -116,7 +116,7 @@
                   'px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 transform hover:scale-105 bg-primary-600 hover:bg-primary-700 text-white'
                 ]"
               >
-                {{ pageData.content[0].button.label || 'Say Hello!' }}
+                {{ pageData?.content[0].button.label || 'Say Hello!' }}
               </button>
             </div>
 
