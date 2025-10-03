@@ -107,7 +107,7 @@
               </h1>
               
               <p class="text-xl text-gray-600 leading-relaxed max-w-lg">
-                {{ pageData?.hero?.description || "I'm a Freelance UI/UX Designer and Developer based in London, England. I strives to build immersive and beautiful web applications through carefully crafted code and user-centric design." }}
+                {{ pageData?.hero?.description ?? "I'm a Freelance UI/UX Designer and Developer based in London, England. I strives to build immersive and beautiful web applications through carefully crafted code and user-centric design." }}
               </p>
               
               <button 
