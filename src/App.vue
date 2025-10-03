@@ -102,9 +102,8 @@
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
             <!-- Left side - Text content -->
             <div class="space-y-8">
-              <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                {{ pageData?.hero?.greeting || "Hello, I'm" }} <br>
-                <span class="text-primary-600">{{ pageData?.hero?.name || "Brooklyn Gilbert" }}.</span>
+              <h1 class="text-5xl lg:text-6xl font-bold text-primary-600 leading-tight">
+            {{ pageData.content[0].Title ?? 'This should be a title' }}
               </h1>
               
               <p class="text-xl text-gray-600 leading-relaxed max-w-lg">
