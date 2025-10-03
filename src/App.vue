@@ -107,17 +107,16 @@
               </h1>
               
               <p class="text-xl text-gray-600 leading-relaxed max-w-lg">
-                {{ pageData?.hero?.description ?? "I'm a Freelance UI/UX Designer and Developer based in London, England. I strives to build immersive and beautiful web applications through carefully crafted code and user-centric design." }}
+                {{ pageData?.content[0].Description ?? "I'm a Freelance UI/UX Designer and Developer based in London, England. I strives to build immersive and beautiful web applications through carefully crafted code and user-centric design." }}
               </p>
               
               <button 
-                v-if="pageData?.hero?.button"
+                v-if="pageData?.content[0].button"
                 :class="[
-                  'px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 transform hover:scale-105',
-                  pageData.hero.button.style || 'bg-primary-600 hover:bg-primary-700 text-white'
+                  'px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 transform hover:scale-105 bg-primary-600 hover:bg-primary-700 text-white'
                 ]"
               >
-                {{ pageData.hero.button.text || 'Say Hello!' }}
+                {{ pageData.content[0].button.label || 'Say Hello!' }}
               </button>
             </div>
 
@@ -130,8 +129,8 @@
               <div class="relative z-10 bg-white rounded-2xl p-8 shadow-2xl transform -rotate-1">
                 <div class="aspect-square rounded-xl overflow-hidden">
                   <img 
-                    :src="pageData?.hero?.image?.url || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=500&fit=crop&crop=face&auto=format'"
-                    :alt="pageData?.hero?.image?.alt || 'Brooklyn Gilbert'"
+                    :src="getImageUrl(pageData?.content[0]?.image?.url) || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=500&fit=crop&crop=face&auto=format'"
+                    :alt="pageData?.content[0]?.image?.alternativeText || 'Hero Image'"
                     class="w-full h-full object-cover"
                   />
                 </div>
@@ -201,6 +200,18 @@ const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value
 }
 
+// Helper function to get full image URL
+const getImageUrl = (url) => {
+  if (!url) return null
+  // If URL already starts with http, return as is
+  if (url.startsWith('http')) return url
+  
+  // Strapi uploads are typically served from root, not under /api
+  const fullUrl = `http://localhost:1337${url}`
+  console.log('Image URL:', fullUrl)
+  return fullUrl
+}
+
 // Fetch page data from Strapi
 const fetchPageData = async () => {
   try {
@@ -213,6 +224,12 @@ const fetchPageData = async () => {
     
     // Strapi wraps data in response.data.data
     pageData.value = response.data.data || response.data
+    
+    // Log image data for debugging
+    if (pageData.value?.content?.[0]?.image) {
+      console.log('Image data:', pageData.value.content[0].image)
+      console.log('Image URL from API:', pageData.value.content[0].image.url)
+    }
   } catch (err) {
     console.error('API Error:', err.message)
     error.value = err.message || 'Failed to load page data'
