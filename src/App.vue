@@ -42,17 +42,20 @@
             <!-- Navigation -->
             <nav class="hidden md:flex items-center space-x-8">
               <a 
-                v-for="(item, index) in pageData?.header?.navigation || defaultNavigation"
-                :key="index"
-                :href="item.url || '#'" 
+                v-for="(item, index) in pageData?.header?.MainMenu?.MenuItem || defaultNavigation"
+                :key="item.id || index"
+                :href="item.href || '#'" 
+                :target="item.isExternal ? '_blank' : '_self'"
+                :rel="item.isExternal ? 'noopener noreferrer' : ''"
                 :class="[
                   'px-4 py-2 font-medium transition-colors duration-200',
-                  item.isActive 
-                    ? 'bg-primary-600 text-white rounded-lg' 
+                  item.isButton 
+                    ? 'bg-primary-600 text-white rounded-lg hover:bg-primary-700' 
                     : 'text-gray-700 hover:text-primary-600'
                 ]"
               >
                 {{ item.label }}
+                <span v-if="item.isExternal" class="ml-1 text-xs">↗</span>
               </a>
             </nav>
 
@@ -73,17 +76,20 @@
           <div v-if="isMobileMenuOpen" class="md:hidden">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
               <a 
-                v-for="(item, index) in pageData?.header?.navigation || defaultNavigation"
-                :key="index"
-                :href="item.url || '#'" 
+                v-for="(item, index) in pageData?.header?.MainMenu?.MenuItem || defaultNavigation"
+                :key="item.id || index"
+                :href="item.href || '#'" 
+                :target="item.isExternal ? '_blank' : '_self'"
+                :rel="item.isExternal ? 'noopener noreferrer' : ''"
                 :class="[
                   'block px-3 py-2 font-medium',
-                  item.isActive 
+                  item.isButton 
                     ? 'bg-primary-600 text-white rounded-md' 
                     : 'text-gray-700 hover:text-primary-600'
                 ]"
               >
                 {{ item.label }}
+                <span v-if="item.isExternal" class="ml-1 text-xs">↗</span>
               </a>
             </div>
           </div>
@@ -204,13 +210,13 @@ const fetchPageData = async () => {
     
     const response = await apiService.getPageData(PAGE_ID)
     
-    // Strapi returns data in a 'data' property
-    pageData.value = response.data
+    console.log('API Response:', response.data)
     
-    console.log('Page data loaded:', pageData.value)
+    // Strapi wraps data in response.data.data
+    pageData.value = response.data.data || response.data
   } catch (err) {
+    console.error('API Error:', err.message)
     error.value = err.message || 'Failed to load page data'
-    console.error('Error loading page data:', err)
   } finally {
     loading.value = false
   }

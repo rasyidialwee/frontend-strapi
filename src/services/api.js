@@ -14,9 +14,9 @@ export const apiService = {
   async getPageData(pageId) {
     try {
       const response = await api.get(`/pages/${pageId}`)
-      return response.data
+      return response
     } catch (error) {
-      console.error('Error fetching page data:', error)
+      console.error('API Service Error:', error)
       throw error
     }
   },
